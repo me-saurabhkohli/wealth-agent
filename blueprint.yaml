@@ -1,0 +1,32 @@
+# blueprint.yaml
+# The blueprint from the article "I Built an AI Wealth Manager. Then I Took
+# Away Everything It Was Bad At." Agents, workflow, contracts, budgets, and
+# observability are declared here and validated before anything runs.
+api_version: pyagent/v1
+metadata:
+  name: wealth-manager
+providers:
+  primary: { model: openai:gpt-5.6-sol }
+  small:   { model: openai:gpt-5.6-luna }
+agents:
+  supervisor: { provider: primary }
+  market:     { provider: primary }
+  tax:        { provider: primary }
+  compliance: { provider: primary }
+  rebalancer: { provider: small }
+workflows:
+  rebalance:
+    pattern: supervisor
+    agents:
+      lead: supervisor
+      workers: [market, tax, compliance, rebalancer]
+contracts:
+  market:     { output: MarketData }        # fixed fields, strict JSON
+  tax:        { output: TaxResult }         # trades, savings, drift
+  compliance: { output: ComplianceResult }  # pass or fail, with reasons
+governance:
+  token_budget_per_run: 60000
+  human_checkpoint: before_execution
+observability:
+  trace: true
+  cost_tracking: true
