@@ -42,6 +42,8 @@ import urllib.request
 import yaml
 
 from agents import AGENT_BINDINGS
+from contracts import SchemaValidationError
+from contracts import validate as validate_contract_schema
 from trace import TraceEventBus
 
 REQUIRED_CONTRACT_FIELDS = {
@@ -177,6 +179,15 @@ def extract_json_object(text: str) -> dict:
 
 
 def check_contract(contract_name: str, payload) -> None:
+    """Two layers, both from the contracts the blueprint names. The field
+    check below is the fast shape test the article describes; the JSON
+    Schema in contracts/ then validates the full payload, types and
+    nested trade rows included. A violation raises ContractError naming
+    the contract and the offending path."""
+    try:
+        validate_contract_schema(contract_name, payload)
+    except SchemaValidationError as exc:
+        raise ContractError(str(exc)) from exc
     fields = REQUIRED_CONTRACT_FIELDS[contract_name]
     if isinstance(payload, dict) and payload and all(isinstance(v, dict) for v in payload.values()):
         for key, row in payload.items():
@@ -192,7 +203,9 @@ def check_contract(contract_name: str, payload) -> None:
 class Runtime:
     def __init__(self, blueprint: dict, adapters: dict, trace_bus: TraceEventBus | None = None, model=None) -> None:
         self.blueprint = blueprint
-        self.adapters = adapters
+        # Copy the bindings so a caller (or a test) swapping one adapter
+        # on a built runtime cannot leak the change into other runtimes.
+        self.adapters = dict(adapters)
         self.bus = trace_bus or TraceEventBus()
         self.model = model or MockModel()
         self.budget = int(blueprint.get("governance", {}).get("token_budget_per_run", 0)) or None
@@ -240,6 +253,8 @@ class Runtime:
             "holdings": request["holdings"],
             "prices": {t: market_data[t]["price"] for t in market_data},
             "targets": request.get("targets") or {"stock": 0.6, "bond": 0.4},
+            "recent_sales": request.get("recent_sales", []),
+            "as_of": request.get("as_of", "2026-11-24"),
         }
         tax_result = json.loads(self.adapters["tax.optimize"](json.dumps(tax_payload)))
         check_contract("TaxResult", tax_result)
@@ -252,6 +267,7 @@ class Runtime:
             "trades": tax_result["recommended_trades"],
             "holdings": request["holdings"],
             "prices": {t: market_data[t]["price"] for t in market_data},
+            "targets": request.get("targets") or {"stock": 0.6, "bond": 0.4},
             "recent_sales": request.get("recent_sales", []),
             "as_of": request.get("as_of", "2026-11-24"),
         }

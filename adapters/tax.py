@@ -16,8 +16,15 @@ Input shape:
               {"shares": 70, "cost_basis": 190.0, "acquired": "2025-09-15"}]}
   ],
   "prices": {"AAPL": 175.20},
-  "targets": {"stock": 0.6, "bond": 0.4}
+  "targets": {"stock": 0.6, "bond": 0.4},
+  "recent_sales": [{"ticker": "AAPL", "date": "2026-11-10",
+                    "realized_gain_loss": -500.0}],
+  "as_of": "2026-11-24"
 }
+
+recent_sales and as_of are optional. The optimizer needs them for the
+wash sale window and the short versus long term classification; as_of
+defaults to a fixed date, never the clock, so runs stay reproducible.
 """
 
 from __future__ import annotations
@@ -34,7 +41,13 @@ def run_tax_optimization(holdings_json: str) -> str:
     targets = payload.get("targets") or {"stock": 0.6, "bond": 0.4}
 
     strategy = OracleStrategy(targets=targets, optimization_type="TAX_AWARE")
-    oracle = Oracle(strategy=strategy, holdings=holdings, prices=prices)
+    oracle = Oracle(
+        strategy=strategy,
+        holdings=holdings,
+        prices=prices,
+        recent_sales=payload.get("recent_sales", []),
+        as_of=payload.get("as_of", "2026-11-24"),
+    )
     result = oracle.optimize()
 
     return json.dumps(
@@ -45,5 +58,7 @@ def run_tax_optimization(holdings_json: str) -> str:
             "net_realized_gain_loss": result.net_realized_gain_loss,
             "drift_before_pct": result.drift_before,
             "drift_after_pct": result.drift_after,
+            "gain_loss_breakdown": result.gain_loss_breakdown,
+            "skipped_lots": result.skipped_lots,
         }
     )

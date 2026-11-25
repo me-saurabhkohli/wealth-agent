@@ -1,0 +1,1560 @@
+{
+  "about": "Recorded runs of the wealth-agent Python demo on synthetic data. Nothing here is a live system or financial advice.",
+  "clients": [
+    {
+      "as_of": "2026-11-24",
+      "block_reasons": [],
+      "client_id": "ABC123",
+      "compliance": {
+        "checks": [
+          {
+            "detail": "Largest position after trades is MSFT at 47.4 percent, within the 50 percent limit",
+            "rule": "concentration_limit",
+            "status": "pass"
+          },
+          {
+            "detail": "No buy falls inside a wash sale window",
+            "rule": "wash_sale_window",
+            "status": "pass"
+          },
+          {
+            "detail": "Post-trade drift is 0.0 points from the target allocation, within the 5 point tolerance",
+            "rule": "drift_tolerance",
+            "status": "pass"
+          },
+          {
+            "detail": "No planned sale exceeds the shares held",
+            "rule": "sell_within_holdings",
+            "status": "pass"
+          },
+          {
+            "detail": "Unspent proceeds after trades are $0.00, 0.0 percent of the portfolio",
+            "rule": "cash_residual",
+            "status": "pass"
+          }
+        ],
+        "reasons": [],
+        "status": "pass"
+      },
+      "goal": "Rebalance client ABC123 for tax efficiency, target 60/40",
+      "holdings": [
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2023-03-01",
+              "cost_basis": 120.0,
+              "shares": 30
+            },
+            {
+              "acquired": "2025-09-15",
+              "cost_basis": 190.0,
+              "shares": 70
+            }
+          ],
+          "shares": 100,
+          "ticker": "AAPL"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2022-06-01",
+              "cost_basis": 300.0,
+              "shares": 50
+            }
+          ],
+          "shares": 50,
+          "ticker": "MSFT"
+        },
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2024-01-15",
+              "cost_basis": 70.0,
+              "shares": 80
+            }
+          ],
+          "shares": 80,
+          "ticker": "BND"
+        }
+      ],
+      "market_data": {
+        "AAPL": {
+          "price": 175.2,
+          "sentiment": 0.7,
+          "volatility": 0.18
+        },
+        "BND": {
+          "price": 72.4,
+          "sentiment": 0.5,
+          "volatility": 0.05
+        },
+        "MSFT": {
+          "price": 420.5,
+          "sentiment": 0.8,
+          "volatility": 0.15
+        }
+      },
+      "plan": "Rebalance plan: Sell 68.17 shares of AAPL at $175.20 (about $11,942.81). Buy 164.96 shares of BND at $72.40 (about $11,942.81). The sales harvest a net loss of $1,008.87, an estimated tax saving of $252.22. Allocation drift falls by 53.87 points. Compliance status: pass.",
+      "recent_sales": [],
+      "status": "complete",
+      "targets": {
+        "bond": 0.4,
+        "stock": 0.6
+      },
+      "tax_result": {
+        "drift_after_pct": 0.0,
+        "drift_before_pct": 53.87,
+        "drift_reduction": 53.87,
+        "gain_loss_breakdown": {
+          "long_term_net": -1008.87,
+          "short_term_net": 0.0
+        },
+        "net_realized_gain_loss": -1008.87,
+        "recommended_trades": [
+          {
+            "lot_cost_basis": 190.0,
+            "price": 175.2,
+            "proceeds": 11942.81,
+            "realized_gain_loss": -1008.87,
+            "shares": 68.17,
+            "side": "sell",
+            "term": "long",
+            "ticker": "AAPL"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 72.4,
+            "proceeds": 11942.81,
+            "realized_gain_loss": 0.0,
+            "shares": 164.96,
+            "side": "buy",
+            "term": null,
+            "ticker": "BND"
+          }
+        ],
+        "skipped_lots": [],
+        "tax_savings_estimate": 252.22
+      },
+      "tokens_by_step": {
+        "compliance.check": 0,
+        "market": 57,
+        "market.fetch": 0,
+        "rebalance": 0,
+        "rebalancer": 67,
+        "supervisor": 44,
+        "tax": 0,
+        "tax.optimize": 0
+      },
+      "tokens_used": 168,
+      "trace": [
+        {
+          "detail": "client ABC123",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 1,
+          "tokens": 0
+        },
+        {
+          "detail": "Plan for client ABC123: fetch market data for AAPL, MSFT, BND; run tax optimization toward the target allocation; gate the proposed trades on compliance; then synthesize the plan.",
+          "kind": "plan",
+          "name": "supervisor",
+          "seq": 2,
+          "tokens": 44
+        },
+        {
+          "detail": "3 tickers via the approved query template",
+          "kind": "worker",
+          "name": "market",
+          "seq": 3,
+          "tokens": 57
+        },
+        {
+          "detail": "fallback chain: endpoint, Yahoo, mock",
+          "kind": "adapter",
+          "name": "market.fetch",
+          "seq": 4,
+          "tokens": 0
+        },
+        {
+          "detail": "2 trades proposed",
+          "kind": "worker",
+          "name": "tax",
+          "seq": 5,
+          "tokens": 0
+        },
+        {
+          "detail": "deterministic Oracle math, no model call",
+          "kind": "adapter",
+          "name": "tax.optimize",
+          "seq": 6,
+          "tokens": 0
+        },
+        {
+          "detail": "status: pass",
+          "kind": "gate",
+          "name": "compliance.check",
+          "seq": 7,
+          "tokens": 0
+        },
+        {
+          "detail": "plan written; human checkpoint before execution",
+          "kind": "synthesis",
+          "name": "rebalancer",
+          "seq": 8,
+          "tokens": 67
+        },
+        {
+          "detail": "complete, 168 tokens used",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 9,
+          "tokens": 0
+        }
+      ]
+    },
+    {
+      "as_of": "2026-11-24",
+      "block_reasons": [
+        "MSFT would be 60.0 percent of the portfolio, over the 50 percent limit"
+      ],
+      "client_id": "DEMO_BLOCKED",
+      "compliance": {
+        "checks": [
+          {
+            "detail": "MSFT would be 60.0 percent of the portfolio, over the 50 percent limit",
+            "rule": "concentration_limit",
+            "status": "fail"
+          },
+          {
+            "detail": "No buy falls inside a wash sale window",
+            "rule": "wash_sale_window",
+            "status": "pass"
+          },
+          {
+            "detail": "Post-trade drift is 0.0 points from the target allocation, within the 5 point tolerance",
+            "rule": "drift_tolerance",
+            "status": "pass"
+          },
+          {
+            "detail": "No planned sale exceeds the shares held",
+            "rule": "sell_within_holdings",
+            "status": "pass"
+          },
+          {
+            "detail": "Unspent proceeds after trades are $0.00, 0.0 percent of the portfolio",
+            "rule": "cash_residual",
+            "status": "pass"
+          }
+        ],
+        "reasons": [
+          "MSFT would be 60.0 percent of the portfolio, over the 50 percent limit"
+        ],
+        "status": "fail"
+      },
+      "goal": "Rebalance client DEMO_BLOCKED for tax efficiency, target 60/40",
+      "holdings": [
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2025-09-23",
+              "cost_basis": 300.0,
+              "shares": 60
+            },
+            {
+              "acquired": "2024-04-13",
+              "cost_basis": 460.0,
+              "shares": 40
+            }
+          ],
+          "shares": 100,
+          "ticker": "MSFT"
+        },
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2024-10-25",
+              "cost_basis": 70.0,
+              "shares": 10
+            }
+          ],
+          "shares": 10,
+          "ticker": "BND"
+        }
+      ],
+      "market_data": {
+        "BND": {
+          "price": 72.4,
+          "sentiment": 0.5,
+          "volatility": 0.05
+        },
+        "MSFT": {
+          "price": 420.5,
+          "sentiment": 0.8,
+          "volatility": 0.15
+        }
+      },
+      "plan": null,
+      "recent_sales": [],
+      "status": "blocked",
+      "targets": {
+        "bond": 0.4,
+        "stock": 0.6
+      },
+      "tax_result": {
+        "drift_after_pct": 0.0,
+        "drift_before_pct": 76.61,
+        "drift_reduction": 76.61,
+        "gain_loss_breakdown": {
+          "long_term_net": -1539.19,
+          "short_term_net": 0.0
+        },
+        "net_realized_gain_loss": -1539.19,
+        "recommended_trades": [
+          {
+            "lot_cost_basis": 460.0,
+            "price": 420.5,
+            "proceeds": 16385.58,
+            "realized_gain_loss": -1539.19,
+            "shares": 38.97,
+            "side": "sell",
+            "term": "long",
+            "ticker": "MSFT"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 72.4,
+            "proceeds": 16385.58,
+            "realized_gain_loss": 0.0,
+            "shares": 226.32,
+            "side": "buy",
+            "term": null,
+            "ticker": "BND"
+          }
+        ],
+        "skipped_lots": [],
+        "tax_savings_estimate": 384.8
+      },
+      "tokens_by_step": {
+        "compliance.check": 0,
+        "market": 41,
+        "market.fetch": 0,
+        "rebalance": 0,
+        "supervisor": 44,
+        "tax": 0,
+        "tax.optimize": 0
+      },
+      "tokens_used": 85,
+      "trace": [
+        {
+          "detail": "client DEMO_BLOCKED",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 1,
+          "tokens": 0
+        },
+        {
+          "detail": "Plan for client DEMO_BLOCKED: fetch market data for MSFT, BND; run tax optimization toward the target allocation; gate the proposed trades on compliance; then synthesize the plan.",
+          "kind": "plan",
+          "name": "supervisor",
+          "seq": 2,
+          "tokens": 44
+        },
+        {
+          "detail": "2 tickers via the approved query template",
+          "kind": "worker",
+          "name": "market",
+          "seq": 3,
+          "tokens": 41
+        },
+        {
+          "detail": "fallback chain: endpoint, Yahoo, mock",
+          "kind": "adapter",
+          "name": "market.fetch",
+          "seq": 4,
+          "tokens": 0
+        },
+        {
+          "detail": "2 trades proposed",
+          "kind": "worker",
+          "name": "tax",
+          "seq": 5,
+          "tokens": 0
+        },
+        {
+          "detail": "deterministic Oracle math, no model call",
+          "kind": "adapter",
+          "name": "tax.optimize",
+          "seq": 6,
+          "tokens": 0
+        },
+        {
+          "detail": "status: fail",
+          "kind": "gate",
+          "name": "compliance.check",
+          "seq": 7,
+          "tokens": 0
+        },
+        {
+          "detail": "blocked at the compliance gate; no plan produced",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 8,
+          "tokens": 0
+        }
+      ]
+    },
+    {
+      "as_of": "2026-11-24",
+      "block_reasons": [],
+      "client_id": "SYN001",
+      "compliance": {
+        "checks": [
+          {
+            "detail": "Largest position after trades is BND at 40.0 percent, within the 50 percent limit",
+            "rule": "concentration_limit",
+            "status": "pass"
+          },
+          {
+            "detail": "No buy falls inside a wash sale window",
+            "rule": "wash_sale_window",
+            "status": "pass"
+          },
+          {
+            "detail": "Post-trade drift is 0.0 points from the target allocation, within the 5 point tolerance",
+            "rule": "drift_tolerance",
+            "status": "pass"
+          },
+          {
+            "detail": "No planned sale exceeds the shares held",
+            "rule": "sell_within_holdings",
+            "status": "pass"
+          },
+          {
+            "detail": "Unspent proceeds after trades are $0.00, 0.0 percent of the portfolio",
+            "rule": "cash_residual",
+            "status": "pass"
+          }
+        ],
+        "reasons": [],
+        "status": "pass"
+      },
+      "goal": "Rebalance client SYN001 for tax efficiency, target 60/40",
+      "holdings": [
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2025-04-26",
+              "cost_basis": 150.0,
+              "shares": 40
+            },
+            {
+              "acquired": "2023-11-29",
+              "cost_basis": 205.0,
+              "shares": 20
+            }
+          ],
+          "shares": 60,
+          "ticker": "AAPL"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2025-10-17",
+              "cost_basis": 350.0,
+              "shares": 30
+            }
+          ],
+          "shares": 30,
+          "ticker": "MSFT"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2025-09-05",
+              "cost_basis": 95.0,
+              "shares": 50
+            }
+          ],
+          "shares": 50,
+          "ticker": "NVDA"
+        },
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2023-12-02",
+              "cost_basis": 68.0,
+              "shares": 100
+            }
+          ],
+          "shares": 100,
+          "ticker": "BND"
+        }
+      ],
+      "market_data": {
+        "AAPL": {
+          "price": 175.2,
+          "sentiment": 0.7,
+          "volatility": 0.18
+        },
+        "BND": {
+          "price": 72.4,
+          "sentiment": 0.5,
+          "volatility": 0.05
+        },
+        "MSFT": {
+          "price": 420.5,
+          "sentiment": 0.8,
+          "volatility": 0.15
+        },
+        "NVDA": {
+          "price": 131.4,
+          "sentiment": 0.75,
+          "volatility": 0.32
+        }
+      },
+      "plan": "Rebalance plan: Sell 20.00 shares of AAPL at $175.20 (about $3,504.00). Sell 23.01 shares of AAPL at $175.20 (about $4,030.79). Buy 104.07 shares of BND at $72.40 (about $7,534.79). The sales harvest a net loss of $16.23, an estimated tax saving of $4.06. Allocation drift falls by 40.80 points. Compliance status: pass.",
+      "recent_sales": [],
+      "status": "complete",
+      "targets": {
+        "bond": 0.4,
+        "stock": 0.6
+      },
+      "tax_result": {
+        "drift_after_pct": 0.0,
+        "drift_before_pct": 40.8,
+        "drift_reduction": 40.8,
+        "gain_loss_breakdown": {
+          "long_term_net": -16.23,
+          "short_term_net": 0.0
+        },
+        "net_realized_gain_loss": -16.23,
+        "recommended_trades": [
+          {
+            "lot_cost_basis": 205.0,
+            "price": 175.2,
+            "proceeds": 3504.0,
+            "realized_gain_loss": -596.0,
+            "shares": 20.0,
+            "side": "sell",
+            "term": "long",
+            "ticker": "AAPL"
+          },
+          {
+            "lot_cost_basis": 150.0,
+            "price": 175.2,
+            "proceeds": 4030.79,
+            "realized_gain_loss": 579.77,
+            "shares": 23.01,
+            "side": "sell",
+            "term": "long",
+            "ticker": "AAPL"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 72.4,
+            "proceeds": 7534.79,
+            "realized_gain_loss": 0.0,
+            "shares": 104.07,
+            "side": "buy",
+            "term": null,
+            "ticker": "BND"
+          }
+        ],
+        "skipped_lots": [],
+        "tax_savings_estimate": 4.06
+      },
+      "tokens_by_step": {
+        "compliance.check": 0,
+        "market": 73,
+        "market.fetch": 0,
+        "rebalance": 0,
+        "rebalancer": 80,
+        "supervisor": 46,
+        "tax": 0,
+        "tax.optimize": 0
+      },
+      "tokens_used": 199,
+      "trace": [
+        {
+          "detail": "client SYN001",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 1,
+          "tokens": 0
+        },
+        {
+          "detail": "Plan for client SYN001: fetch market data for AAPL, MSFT, NVDA, BND; run tax optimization toward the target allocation; gate the proposed trades on compliance; then synthesize the plan.",
+          "kind": "plan",
+          "name": "supervisor",
+          "seq": 2,
+          "tokens": 46
+        },
+        {
+          "detail": "4 tickers via the approved query template",
+          "kind": "worker",
+          "name": "market",
+          "seq": 3,
+          "tokens": 73
+        },
+        {
+          "detail": "fallback chain: endpoint, Yahoo, mock",
+          "kind": "adapter",
+          "name": "market.fetch",
+          "seq": 4,
+          "tokens": 0
+        },
+        {
+          "detail": "3 trades proposed",
+          "kind": "worker",
+          "name": "tax",
+          "seq": 5,
+          "tokens": 0
+        },
+        {
+          "detail": "deterministic Oracle math, no model call",
+          "kind": "adapter",
+          "name": "tax.optimize",
+          "seq": 6,
+          "tokens": 0
+        },
+        {
+          "detail": "status: pass",
+          "kind": "gate",
+          "name": "compliance.check",
+          "seq": 7,
+          "tokens": 0
+        },
+        {
+          "detail": "plan written; human checkpoint before execution",
+          "kind": "synthesis",
+          "name": "rebalancer",
+          "seq": 8,
+          "tokens": 80
+        },
+        {
+          "detail": "complete, 199 tokens used",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 9,
+          "tokens": 0
+        }
+      ]
+    },
+    {
+      "as_of": "2026-11-24",
+      "block_reasons": [],
+      "client_id": "SYN002",
+      "compliance": {
+        "checks": [
+          {
+            "detail": "Largest position after trades is MSFT at 37.2 percent, within the 50 percent limit",
+            "rule": "concentration_limit",
+            "status": "pass"
+          },
+          {
+            "detail": "No buy falls inside a wash sale window",
+            "rule": "wash_sale_window",
+            "status": "pass"
+          },
+          {
+            "detail": "Post-trade drift is 0.0 points from the target allocation, within the 5 point tolerance",
+            "rule": "drift_tolerance",
+            "status": "pass"
+          },
+          {
+            "detail": "No planned sale exceeds the shares held",
+            "rule": "sell_within_holdings",
+            "status": "pass"
+          },
+          {
+            "detail": "Unspent proceeds after trades are $0.00, 0.0 percent of the portfolio",
+            "rule": "cash_residual",
+            "status": "pass"
+          }
+        ],
+        "reasons": [],
+        "status": "pass"
+      },
+      "goal": "Rebalance client SYN002 for tax efficiency, target 65/35",
+      "holdings": [
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2025-06-01",
+              "cost_basis": 470.0,
+              "shares": 25
+            },
+            {
+              "acquired": "2024-02-08",
+              "cost_basis": 390.0,
+              "shares": 15
+            }
+          ],
+          "shares": 40,
+          "ticker": "MSFT"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2024-07-01",
+              "cost_basis": 140.0,
+              "shares": 50
+            }
+          ],
+          "shares": 50,
+          "ticker": "AAPL"
+        },
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2024-06-06",
+              "cost_basis": 95.0,
+              "shares": 60
+            }
+          ],
+          "shares": 60,
+          "ticker": "AGG"
+        }
+      ],
+      "market_data": {
+        "AAPL": {
+          "price": 175.2,
+          "sentiment": 0.7,
+          "volatility": 0.18
+        },
+        "AGG": {
+          "price": 98.5,
+          "sentiment": 0.5,
+          "volatility": 0.06
+        },
+        "MSFT": {
+          "price": 420.5,
+          "sentiment": 0.8,
+          "volatility": 0.15
+        }
+      },
+      "plan": "Rebalance plan: Sell 12.16 shares of MSFT at $420.50 (about $5,111.51). Buy 51.89 shares of AGG at $98.50 (about $5,111.51). The sales harvest a net loss of $601.71, an estimated tax saving of $150.43. Allocation drift falls by 32.46 points. Compliance status: pass.",
+      "recent_sales": [
+        {
+          "date": "2026-11-09",
+          "realized_gain_loss": -1800.0,
+          "ticker": "MSFT"
+        }
+      ],
+      "status": "complete",
+      "targets": {
+        "bond": 0.35,
+        "stock": 0.65
+      },
+      "tax_result": {
+        "drift_after_pct": 0.0,
+        "drift_before_pct": 32.46,
+        "drift_reduction": 32.46,
+        "gain_loss_breakdown": {
+          "long_term_net": -601.71,
+          "short_term_net": 0.0
+        },
+        "net_realized_gain_loss": -601.71,
+        "recommended_trades": [
+          {
+            "lot_cost_basis": 470.0,
+            "price": 420.5,
+            "proceeds": 5111.51,
+            "realized_gain_loss": -601.71,
+            "shares": 12.16,
+            "side": "sell",
+            "term": "long",
+            "ticker": "MSFT"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 98.5,
+            "proceeds": 5111.51,
+            "realized_gain_loss": 0.0,
+            "shares": 51.89,
+            "side": "buy",
+            "term": null,
+            "ticker": "AGG"
+          }
+        ],
+        "skipped_lots": [],
+        "tax_savings_estimate": 150.43
+      },
+      "tokens_by_step": {
+        "compliance.check": 0,
+        "market": 57,
+        "market.fetch": 0,
+        "rebalance": 0,
+        "rebalancer": 66,
+        "supervisor": 44,
+        "tax": 0,
+        "tax.optimize": 0
+      },
+      "tokens_used": 167,
+      "trace": [
+        {
+          "detail": "client SYN002",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 1,
+          "tokens": 0
+        },
+        {
+          "detail": "Plan for client SYN002: fetch market data for MSFT, AAPL, AGG; run tax optimization toward the target allocation; gate the proposed trades on compliance; then synthesize the plan.",
+          "kind": "plan",
+          "name": "supervisor",
+          "seq": 2,
+          "tokens": 44
+        },
+        {
+          "detail": "3 tickers via the approved query template",
+          "kind": "worker",
+          "name": "market",
+          "seq": 3,
+          "tokens": 57
+        },
+        {
+          "detail": "fallback chain: endpoint, Yahoo, mock",
+          "kind": "adapter",
+          "name": "market.fetch",
+          "seq": 4,
+          "tokens": 0
+        },
+        {
+          "detail": "2 trades proposed",
+          "kind": "worker",
+          "name": "tax",
+          "seq": 5,
+          "tokens": 0
+        },
+        {
+          "detail": "deterministic Oracle math, no model call",
+          "kind": "adapter",
+          "name": "tax.optimize",
+          "seq": 6,
+          "tokens": 0
+        },
+        {
+          "detail": "status: pass",
+          "kind": "gate",
+          "name": "compliance.check",
+          "seq": 7,
+          "tokens": 0
+        },
+        {
+          "detail": "plan written; human checkpoint before execution",
+          "kind": "synthesis",
+          "name": "rebalancer",
+          "seq": 8,
+          "tokens": 66
+        },
+        {
+          "detail": "complete, 167 tokens used",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 9,
+          "tokens": 0
+        }
+      ]
+    },
+    {
+      "as_of": "2026-11-24",
+      "block_reasons": [],
+      "client_id": "SYN003",
+      "compliance": {
+        "checks": [
+          {
+            "detail": "Largest position after trades is AAPL at 48.5 percent, within the 50 percent limit",
+            "rule": "concentration_limit",
+            "status": "pass"
+          },
+          {
+            "detail": "No buy falls inside a wash sale window",
+            "rule": "wash_sale_window",
+            "status": "pass"
+          },
+          {
+            "detail": "Post-trade drift is 0.0 points from the target allocation, within the 5 point tolerance",
+            "rule": "drift_tolerance",
+            "status": "pass"
+          },
+          {
+            "detail": "No planned sale exceeds the shares held",
+            "rule": "sell_within_holdings",
+            "status": "pass"
+          },
+          {
+            "detail": "Unspent proceeds after trades are $0.00, 0.0 percent of the portfolio",
+            "rule": "cash_residual",
+            "status": "pass"
+          }
+        ],
+        "reasons": [],
+        "status": "pass"
+      },
+      "goal": "Rebalance client SYN003 for tax efficiency, target 60/40",
+      "holdings": [
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2024-07-29",
+              "cost_basis": 190.0,
+              "shares": 95
+            },
+            {
+              "acquired": "2026-11-08",
+              "cost_basis": 170.0,
+              "shares": 20
+            }
+          ],
+          "shares": 115,
+          "ticker": "AAPL"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2024-03-17",
+              "cost_basis": 300.0,
+              "shares": 20
+            }
+          ],
+          "shares": 20,
+          "ticker": "MSFT"
+        },
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2025-02-10",
+              "cost_basis": 70.0,
+              "shares": 80
+            }
+          ],
+          "shares": 80,
+          "ticker": "BND"
+        }
+      ],
+      "market_data": {
+        "AAPL": {
+          "price": 175.2,
+          "sentiment": 0.7,
+          "volatility": 0.18
+        },
+        "BND": {
+          "price": 72.4,
+          "sentiment": 0.5,
+          "volatility": 0.05
+        },
+        "MSFT": {
+          "price": 420.5,
+          "sentiment": 0.8,
+          "volatility": 0.15
+        }
+      },
+      "plan": "Rebalance plan: Sell 20.00 shares of AAPL at $175.20 (about $3,504.00). Sell 10.57 shares of MSFT at $420.50 (about $4,444.01). Buy 109.78 shares of BND at $72.40 (about $7,948.01). The sales realize a net gain of $1,377.49; no loss was available to harvest in this run. Allocation drift falls by 46.28 points. Compliance status: pass.",
+      "recent_sales": [],
+      "status": "complete",
+      "targets": {
+        "bond": 0.4,
+        "stock": 0.6
+      },
+      "tax_result": {
+        "drift_after_pct": 0.0,
+        "drift_before_pct": 46.28,
+        "drift_reduction": 46.28,
+        "gain_loss_breakdown": {
+          "long_term_net": 1273.49,
+          "short_term_net": 104.0
+        },
+        "net_realized_gain_loss": 1377.49,
+        "recommended_trades": [
+          {
+            "lot_cost_basis": 170.0,
+            "price": 175.2,
+            "proceeds": 3504.0,
+            "realized_gain_loss": 104.0,
+            "shares": 20.0,
+            "side": "sell",
+            "term": "short",
+            "ticker": "AAPL"
+          },
+          {
+            "lot_cost_basis": 300.0,
+            "price": 420.5,
+            "proceeds": 4444.01,
+            "realized_gain_loss": 1273.49,
+            "shares": 10.57,
+            "side": "sell",
+            "term": "long",
+            "ticker": "MSFT"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 72.4,
+            "proceeds": 7948.01,
+            "realized_gain_loss": 0.0,
+            "shares": 109.78,
+            "side": "buy",
+            "term": null,
+            "ticker": "BND"
+          }
+        ],
+        "skipped_lots": [
+          {
+            "acquired": "2024-07-29",
+            "lot_cost_basis": 190.0,
+            "reason": "shares of AAPL acquired on 2026-11-08 (20.00 shares) stay in the portfolio inside the 30 day wash sale window, so a loss sale of AAPL would be disallowed",
+            "shares": 95.0,
+            "ticker": "AAPL"
+          }
+        ],
+        "tax_savings_estimate": 0.0
+      },
+      "tokens_by_step": {
+        "compliance.check": 0,
+        "market": 57,
+        "market.fetch": 0,
+        "rebalance": 0,
+        "rebalancer": 83,
+        "supervisor": 44,
+        "tax": 0,
+        "tax.optimize": 0
+      },
+      "tokens_used": 184,
+      "trace": [
+        {
+          "detail": "client SYN003",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 1,
+          "tokens": 0
+        },
+        {
+          "detail": "Plan for client SYN003: fetch market data for AAPL, MSFT, BND; run tax optimization toward the target allocation; gate the proposed trades on compliance; then synthesize the plan.",
+          "kind": "plan",
+          "name": "supervisor",
+          "seq": 2,
+          "tokens": 44
+        },
+        {
+          "detail": "3 tickers via the approved query template",
+          "kind": "worker",
+          "name": "market",
+          "seq": 3,
+          "tokens": 57
+        },
+        {
+          "detail": "fallback chain: endpoint, Yahoo, mock",
+          "kind": "adapter",
+          "name": "market.fetch",
+          "seq": 4,
+          "tokens": 0
+        },
+        {
+          "detail": "3 trades proposed",
+          "kind": "worker",
+          "name": "tax",
+          "seq": 5,
+          "tokens": 0
+        },
+        {
+          "detail": "deterministic Oracle math, no model call",
+          "kind": "adapter",
+          "name": "tax.optimize",
+          "seq": 6,
+          "tokens": 0
+        },
+        {
+          "detail": "status: pass",
+          "kind": "gate",
+          "name": "compliance.check",
+          "seq": 7,
+          "tokens": 0
+        },
+        {
+          "detail": "plan written; human checkpoint before execution",
+          "kind": "synthesis",
+          "name": "rebalancer",
+          "seq": 8,
+          "tokens": 83
+        },
+        {
+          "detail": "complete, 184 tokens used",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 9,
+          "tokens": 0
+        }
+      ]
+    },
+    {
+      "as_of": "2026-11-24",
+      "block_reasons": [],
+      "client_id": "SYN004",
+      "compliance": {
+        "checks": [
+          {
+            "detail": "Largest position after trades is AGG at 40.8 percent, within the 50 percent limit",
+            "rule": "concentration_limit",
+            "status": "pass"
+          },
+          {
+            "detail": "No buy falls inside a wash sale window",
+            "rule": "wash_sale_window",
+            "status": "pass"
+          },
+          {
+            "detail": "Post-trade drift is 0.0 points from the target allocation, within the 5 point tolerance",
+            "rule": "drift_tolerance",
+            "status": "pass"
+          },
+          {
+            "detail": "No planned sale exceeds the shares held",
+            "rule": "sell_within_holdings",
+            "status": "pass"
+          },
+          {
+            "detail": "Unspent proceeds after trades are $0.00, 0.0 percent of the portfolio",
+            "rule": "cash_residual",
+            "status": "pass"
+          }
+        ],
+        "reasons": [],
+        "status": "pass"
+      },
+      "goal": "Rebalance client SYN004 for tax efficiency, target 50/50",
+      "holdings": [
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2025-08-04",
+              "cost_basis": 104.0,
+              "shares": 120
+            },
+            {
+              "acquired": "2026-09-25",
+              "cost_basis": 92.0,
+              "shares": 80
+            }
+          ],
+          "shares": 200,
+          "ticker": "AGG"
+        },
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2024-03-02",
+              "cost_basis": 70.0,
+              "shares": 50
+            }
+          ],
+          "shares": 50,
+          "ticker": "BND"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2024-03-24",
+              "cost_basis": 240.0,
+              "shares": 40
+            }
+          ],
+          "shares": 40,
+          "ticker": "VTI"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2026-08-27",
+              "cost_basis": 480.0,
+              "shares": 10
+            }
+          ],
+          "shares": 10,
+          "ticker": "QQQ"
+        }
+      ],
+      "market_data": {
+        "AGG": {
+          "price": 98.5,
+          "sentiment": 0.5,
+          "volatility": 0.06
+        },
+        "BND": {
+          "price": 72.4,
+          "sentiment": 0.5,
+          "volatility": 0.05
+        },
+        "QQQ": {
+          "price": 512.75,
+          "sentiment": 0.65,
+          "volatility": 0.16
+        },
+        "VTI": {
+          "price": 268.1,
+          "sentiment": 0.6,
+          "volatility": 0.13
+        }
+      },
+      "plan": "Rebalance plan: Sell 37.91 shares of AGG at $98.50 (about $3,734.25). Buy 9.42 shares of VTI at $268.10 (about $2,526.33). Buy 2.36 shares of QQQ at $512.75 (about $1,207.94). The sales harvest a net loss of $208.51, an estimated tax saving of $52.13. Allocation drift falls by 19.07 points. Compliance status: pass.",
+      "recent_sales": [],
+      "status": "complete",
+      "targets": {
+        "bond": 0.5,
+        "stock": 0.5
+      },
+      "tax_result": {
+        "drift_after_pct": 0.0,
+        "drift_before_pct": 19.07,
+        "drift_reduction": 19.07,
+        "gain_loss_breakdown": {
+          "long_term_net": -208.51,
+          "short_term_net": 0.0
+        },
+        "net_realized_gain_loss": -208.51,
+        "recommended_trades": [
+          {
+            "lot_cost_basis": 104.0,
+            "price": 98.5,
+            "proceeds": 3734.25,
+            "realized_gain_loss": -208.51,
+            "shares": 37.91,
+            "side": "sell",
+            "term": "long",
+            "ticker": "AGG"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 268.1,
+            "proceeds": 2526.33,
+            "realized_gain_loss": 0.0,
+            "shares": 9.42,
+            "side": "buy",
+            "term": null,
+            "ticker": "VTI"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 512.75,
+            "proceeds": 1207.94,
+            "realized_gain_loss": 0.0,
+            "shares": 2.36,
+            "side": "buy",
+            "term": null,
+            "ticker": "QQQ"
+          }
+        ],
+        "skipped_lots": [],
+        "tax_savings_estimate": 52.13
+      },
+      "tokens_by_step": {
+        "compliance.check": 0,
+        "market": 72,
+        "market.fetch": 0,
+        "rebalance": 0,
+        "rebalancer": 79,
+        "supervisor": 45,
+        "tax": 0,
+        "tax.optimize": 0
+      },
+      "tokens_used": 196,
+      "trace": [
+        {
+          "detail": "client SYN004",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 1,
+          "tokens": 0
+        },
+        {
+          "detail": "Plan for client SYN004: fetch market data for AGG, BND, VTI, QQQ; run tax optimization toward the target allocation; gate the proposed trades on compliance; then synthesize the plan.",
+          "kind": "plan",
+          "name": "supervisor",
+          "seq": 2,
+          "tokens": 45
+        },
+        {
+          "detail": "4 tickers via the approved query template",
+          "kind": "worker",
+          "name": "market",
+          "seq": 3,
+          "tokens": 72
+        },
+        {
+          "detail": "fallback chain: endpoint, Yahoo, mock",
+          "kind": "adapter",
+          "name": "market.fetch",
+          "seq": 4,
+          "tokens": 0
+        },
+        {
+          "detail": "3 trades proposed",
+          "kind": "worker",
+          "name": "tax",
+          "seq": 5,
+          "tokens": 0
+        },
+        {
+          "detail": "deterministic Oracle math, no model call",
+          "kind": "adapter",
+          "name": "tax.optimize",
+          "seq": 6,
+          "tokens": 0
+        },
+        {
+          "detail": "status: pass",
+          "kind": "gate",
+          "name": "compliance.check",
+          "seq": 7,
+          "tokens": 0
+        },
+        {
+          "detail": "plan written; human checkpoint before execution",
+          "kind": "synthesis",
+          "name": "rebalancer",
+          "seq": 8,
+          "tokens": 79
+        },
+        {
+          "detail": "complete, 196 tokens used",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 9,
+          "tokens": 0
+        }
+      ]
+    },
+    {
+      "as_of": "2026-11-24",
+      "block_reasons": [],
+      "client_id": "SYN005",
+      "compliance": {
+        "checks": [
+          {
+            "detail": "Largest position after trades is NVDA at 42.2 percent, within the 50 percent limit",
+            "rule": "concentration_limit",
+            "status": "pass"
+          },
+          {
+            "detail": "No buy falls inside a wash sale window",
+            "rule": "wash_sale_window",
+            "status": "pass"
+          },
+          {
+            "detail": "Post-trade drift is 0.0 points from the target allocation, within the 5 point tolerance",
+            "rule": "drift_tolerance",
+            "status": "pass"
+          },
+          {
+            "detail": "No planned sale exceeds the shares held",
+            "rule": "sell_within_holdings",
+            "status": "pass"
+          },
+          {
+            "detail": "Unspent proceeds after trades are $0.00, 0.0 percent of the portfolio",
+            "rule": "cash_residual",
+            "status": "pass"
+          }
+        ],
+        "reasons": [],
+        "status": "pass"
+      },
+      "goal": "Rebalance client SYN005 for tax efficiency, target 70/30",
+      "holdings": [
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2026-07-15",
+              "cost_basis": 100.0,
+              "shares": 40
+            },
+            {
+              "acquired": "2026-11-01",
+              "cost_basis": 128.0,
+              "shares": 20
+            }
+          ],
+          "shares": 60,
+          "ticker": "NVDA"
+        },
+        {
+          "asset_class": "stock",
+          "lots": [
+            {
+              "acquired": "2024-07-14",
+              "cost_basis": 210.0,
+              "shares": 40
+            }
+          ],
+          "shares": 40,
+          "ticker": "AMZN"
+        },
+        {
+          "asset_class": "bond",
+          "lots": [
+            {
+              "acquired": "2024-12-26",
+              "cost_basis": 71.0,
+              "shares": 40
+            }
+          ],
+          "shares": 40,
+          "ticker": "BND"
+        }
+      ],
+      "market_data": {
+        "AMZN": {
+          "price": 197.85,
+          "sentiment": 0.6,
+          "volatility": 0.21
+        },
+        "BND": {
+          "price": 72.4,
+          "sentiment": 0.5,
+          "volatility": 0.05
+        },
+        "NVDA": {
+          "price": 131.4,
+          "sentiment": 0.75,
+          "volatility": 0.32
+        }
+      },
+      "plan": "Rebalance plan: Sell 13.71 shares of AMZN at $197.85 (about $2,712.21). Buy 37.46 shares of BND at $72.40 (about $2,712.21). The sales harvest a net loss of $166.56, an estimated tax saving of $41.64. Allocation drift falls by 29.02 points. Compliance status: pass.",
+      "recent_sales": [],
+      "status": "complete",
+      "targets": {
+        "bond": 0.3,
+        "stock": 0.7
+      },
+      "tax_result": {
+        "drift_after_pct": 0.0,
+        "drift_before_pct": 29.02,
+        "drift_reduction": 29.02,
+        "gain_loss_breakdown": {
+          "long_term_net": -166.56,
+          "short_term_net": 0.0
+        },
+        "net_realized_gain_loss": -166.56,
+        "recommended_trades": [
+          {
+            "lot_cost_basis": 210.0,
+            "price": 197.85,
+            "proceeds": 2712.21,
+            "realized_gain_loss": -166.56,
+            "shares": 13.71,
+            "side": "sell",
+            "term": "long",
+            "ticker": "AMZN"
+          },
+          {
+            "lot_cost_basis": null,
+            "price": 72.4,
+            "proceeds": 2712.21,
+            "realized_gain_loss": 0.0,
+            "shares": 37.46,
+            "side": "buy",
+            "term": null,
+            "ticker": "BND"
+          }
+        ],
+        "skipped_lots": [],
+        "tax_savings_estimate": 41.64
+      },
+      "tokens_by_step": {
+        "compliance.check": 0,
+        "market": 57,
+        "market.fetch": 0,
+        "rebalance": 0,
+        "rebalancer": 66,
+        "supervisor": 44,
+        "tax": 0,
+        "tax.optimize": 0
+      },
+      "tokens_used": 167,
+      "trace": [
+        {
+          "detail": "client SYN005",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 1,
+          "tokens": 0
+        },
+        {
+          "detail": "Plan for client SYN005: fetch market data for NVDA, AMZN, BND; run tax optimization toward the target allocation; gate the proposed trades on compliance; then synthesize the plan.",
+          "kind": "plan",
+          "name": "supervisor",
+          "seq": 2,
+          "tokens": 44
+        },
+        {
+          "detail": "3 tickers via the approved query template",
+          "kind": "worker",
+          "name": "market",
+          "seq": 3,
+          "tokens": 57
+        },
+        {
+          "detail": "fallback chain: endpoint, Yahoo, mock",
+          "kind": "adapter",
+          "name": "market.fetch",
+          "seq": 4,
+          "tokens": 0
+        },
+        {
+          "detail": "2 trades proposed",
+          "kind": "worker",
+          "name": "tax",
+          "seq": 5,
+          "tokens": 0
+        },
+        {
+          "detail": "deterministic Oracle math, no model call",
+          "kind": "adapter",
+          "name": "tax.optimize",
+          "seq": 6,
+          "tokens": 0
+        },
+        {
+          "detail": "status: pass",
+          "kind": "gate",
+          "name": "compliance.check",
+          "seq": 7,
+          "tokens": 0
+        },
+        {
+          "detail": "plan written; human checkpoint before execution",
+          "kind": "synthesis",
+          "name": "rebalancer",
+          "seq": 8,
+          "tokens": 66
+        },
+        {
+          "detail": "complete, 167 tokens used",
+          "kind": "run",
+          "name": "rebalance",
+          "seq": 9,
+          "tokens": 0
+        }
+      ]
+    }
+  ]
+}

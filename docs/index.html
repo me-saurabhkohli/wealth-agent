@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wealth Agent Demo: Recorded Runs</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <h1>Wealth Agent: the rebalance demo</h1>
+  <p class="tagline">
+    Recorded runs of the Python demo from the article
+    &ldquo;I Built an AI Wealth Manager. Then I Took Away Everything It Was Bad At.&rdquo;
+    Every run below was produced by the actual pipeline on synthetic data,
+    then recorded. Nothing on this page runs live, and none of it is financial advice.
+  </p>
+</header>
+
+<main>
+  <section class="panel" aria-label="Choose a client">
+    <h2>Client</h2>
+    <div id="client-picker" class="client-picker"></div>
+    <p id="client-goal" class="goal"></p>
+  </section>
+
+  <div class="columns">
+    <div class="column">
+      <section class="panel" aria-label="Portfolio">
+        <h2>Portfolio and tax lots</h2>
+        <div id="portfolio"></div>
+        <div id="recent-sales"></div>
+      </section>
+
+      <section class="panel" aria-label="Market data">
+        <h2>Market data <span class="hint">one fixed GraphQL query, only the tickers vary</span></h2>
+        <div id="market-data"></div>
+      </section>
+
+      <section class="panel" aria-label="Proposed trades">
+        <h2>Proposed trades <span class="hint">computed by the Oracle tax optimizer, no model</span></h2>
+        <div id="trades"></div>
+        <div id="skipped-lots"></div>
+      </section>
+
+      <section class="panel" aria-label="Compliance">
+        <h2>Compliance checklist <span class="hint">rules engine, pass or fail with reasons</span></h2>
+        <div id="compliance"></div>
+      </section>
+
+      <section class="panel" aria-label="Outcome">
+        <h2>Outcome</h2>
+        <div id="outcome"></div>
+      </section>
+    </div>
+
+    <div class="column">
+      <section class="panel sticky" aria-label="Run replay">
+        <h2>Run replay <span class="hint">the flight recorder, step by step</span></h2>
+        <div class="player-controls">
+          <button id="btn-prev" type="button">Prev</button>
+          <button id="btn-play" type="button">Play</button>
+          <button id="btn-next" type="button">Next</button>
+          <span id="step-indicator" class="step-indicator"></span>
+        </div>
+        <div id="step-detail" class="step-detail"></div>
+        <ol id="trace-list" class="trace-list"></ol>
+        <p id="token-summary" class="token-summary"></p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>
+    Synthetic portfolios, mock prices, and a deterministic mock model.
+    The tax math and the compliance rules genuinely execute in the Python
+    demo; this page only plays back their recordings.
+  </p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

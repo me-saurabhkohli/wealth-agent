@@ -1,0 +1,59 @@
+{
+  "client_id": "SYN002",
+  "goal": "Rebalance client SYN002 for tax efficiency, target 65/35",
+  "targets": {
+    "stock": 0.65,
+    "bond": 0.35
+  },
+  "as_of": "2026-11-24",
+  "holdings": [
+    {
+      "ticker": "MSFT",
+      "asset_class": "stock",
+      "shares": 40,
+      "lots": [
+        {
+          "shares": 25,
+          "cost_basis": 470.0,
+          "acquired": "2025-06-01"
+        },
+        {
+          "shares": 15,
+          "cost_basis": 390.0,
+          "acquired": "2024-02-08"
+        }
+      ]
+    },
+    {
+      "ticker": "AAPL",
+      "asset_class": "stock",
+      "shares": 50,
+      "lots": [
+        {
+          "shares": 50,
+          "cost_basis": 140.0,
+          "acquired": "2024-07-01"
+        }
+      ]
+    },
+    {
+      "ticker": "AGG",
+      "asset_class": "bond",
+      "shares": 60,
+      "lots": [
+        {
+          "shares": 60,
+          "cost_basis": 95.0,
+          "acquired": "2024-06-06"
+        }
+      ]
+    }
+  ],
+  "recent_sales": [
+    {
+      "ticker": "MSFT",
+      "date": "2026-11-09",
+      "realized_gain_loss": -1800.0
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "client_id": "DEMO_BLOCKED",
+  "goal": "Rebalance client DEMO_BLOCKED for tax efficiency, target 60/40",
+  "targets": {
+    "stock": 0.6,
+    "bond": 0.4
+  },
+  "as_of": "2026-11-24",
+  "holdings": [
+    {
+      "ticker": "MSFT",
+      "asset_class": "stock",
+      "shares": 100,
+      "lots": [
+        {
+          "shares": 60,
+          "cost_basis": 300.0,
+          "acquired": "2025-09-23"
+        },
+        {
+          "shares": 40,
+          "cost_basis": 460.0,
+          "acquired": "2024-04-13"
+        }
+      ]
+    },
+    {
+      "ticker": "BND",
+      "asset_class": "bond",
+      "shares": 10,
+      "lots": [
+        {
+          "shares": 10,
+          "cost_basis": 70.0,
+          "acquired": "2024-10-25"
+        }
+      ]
+    }
+  ],
+  "recent_sales": []
+}

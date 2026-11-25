@@ -1,0 +1,13 @@
+# The approved query. This is the only query the market worker may send.
+# The model can change only the $tickers variable; the query text is fixed.
+# tools/mock_graphql_server.py rejects any query whose normalized text
+# differs from this template, and adapters/graphql_client.py sends exactly
+# this text on the endpoint path.
+query GetMarketData($tickers: [String!]!) {
+  marketData(tickers: $tickers) {
+    ticker
+    price
+    volatility30d
+    sentiment
+  }
+}

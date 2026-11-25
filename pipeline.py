@@ -5,6 +5,7 @@ the structure, and this file wires it together.
 
 Usage:
     python pipeline.py                 Run the demo rebalance (no keys needed)
+    python pipeline.py --client SYN001 Run a synthetic client from data/
     python pipeline.py --replay runs/rebalance.jsonl
                                        Print a recorded run, step by step
 
@@ -71,7 +72,10 @@ DEMO_REQUEST = {
 }
 
 
-def build_runtime(trace_path: str = "runs/rebalance.jsonl"):
+TRACE_PATH = "runs/rebalance.jsonl"
+
+
+def build_runtime(trace_path: str = TRACE_PATH):
     blueprint = load_blueprint(os.path.join(os.path.dirname(__file__), "blueprint.yaml"))
     bus = TraceEventBus()
     bus.subscribe(JsonlExporter(trace_path))
@@ -90,6 +94,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Wealth manager rebalance demo")
     parser.add_argument("--replay", metavar="PATH", help="Replay a recorded run from its JSONL trace")
     parser.add_argument("--request", metavar="PATH", help="Run a rebalance request from a JSON file instead of the demo")
+    parser.add_argument("--client", metavar="CLIENT_ID", help="Run a synthetic client from data/<CLIENT_ID>.json (ABC123 runs the article demo)")
+    parser.add_argument("--json", action="store_true", help="Print the full result as JSON instead of the step by step view")
     args = parser.parse_args()
 
     if args.replay:
@@ -97,18 +103,54 @@ def main() -> int:
         return 0
 
     request = DEMO_REQUEST
-    if args.request:
+    trace_path = TRACE_PATH
+    if args.client:
+        if args.client == DEMO_REQUEST["client_id"]:
+            request = DEMO_REQUEST
+        else:
+            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", f"{args.client}.json")
+            if not os.path.exists(path):
+                print(f"No synthetic client file at {path}. Run data/generate_synthetic.py first.")
+                return 2
+            with open(path) as fh:
+                request = json.load(fh)
+            trace_path = f"runs/{args.client}.jsonl"
+    elif args.request:
         with open(args.request) as fh:
             request = json.load(fh)
 
     os.makedirs("runs", exist_ok=True)
-    runtime, cost_tracker = build_runtime()
+    runtime, cost_tracker = build_runtime(trace_path=trace_path)
     result = runtime.run("rebalance", request)
 
-    print(json.dumps(result, indent=2))
+    if args.json:
+        print(json.dumps(result, indent=2))
+        return 0 if result["status"] == "complete" else 1
+
+    tickers = ", ".join(h["ticker"] for h in request["holdings"])
+    stock_pct = round(request["targets"]["stock"] * 100)
+    bond_pct = round(request["targets"]["bond"] * 100)
+    print(f"Rebalance for client {request['client_id']}: {tickers} toward a "
+          f"{stock_pct}/{bond_pct} stock/bond target.")
+    if os.environ.get("OPENAI_API_KEY"):
+        print("A live model writes the plan text. The numbers are all computed by code.")
+    else:
+        print("No API key set, so a deterministic mock model writes the plan text. "
+              "The numbers are all computed by code.")
     print()
-    print(f"Total tokens: {cost_tracker.total_tokens} (by step: {cost_tracker.by_name})")
-    print("Trace written to runs/rebalance.jsonl")
+    print(format_replay(replay(trace_path)))
+    print()
+    if result["status"] == "complete":
+        print("Final plan")
+        print(result["plan"])
+    else:
+        print("No plan produced: the compliance gate blocked the proposed trades.")
+        for reason in result.get("compliance", {}).get("reasons", []):
+            print(f"- {reason}")
+    print()
+    print(f"Total tokens: {cost_tracker.total_tokens} (the deterministic steps record 0)")
+    print(f"Trace written to {trace_path}. Read it back any time with:")
+    print(f"    python pipeline.py --replay {trace_path}")
     print("Reminder: the human checkpoint sits before execution. This demo never executes trades.")
     return 0 if result["status"] == "complete" else 1
 

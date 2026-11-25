@@ -62,11 +62,19 @@ _REQUEST_SEMAPHORE = threading.Semaphore(5)
 CONTRACT_FIELDS = ("price", "volatility", "sentiment")
 
 # Mock prices. AAPL and MSFT use the example values printed in the article.
+# The rest of the table is the fixed universe the synthetic clients in
+# data/ draw from, so their runs are reproducible by hand as well.
 MOCK_MARKET_DATA = {
     "AAPL": {"price": 175.20, "volatility": 0.18, "sentiment": 0.7},
     "MSFT": {"price": 420.50, "volatility": 0.15, "sentiment": 0.8},
     "BND": {"price": 72.40, "volatility": 0.05, "sentiment": 0.5},
     "VTI": {"price": 268.10, "volatility": 0.13, "sentiment": 0.6},
+    "AGG": {"price": 98.50, "volatility": 0.06, "sentiment": 0.5},
+    "QQQ": {"price": 512.75, "volatility": 0.16, "sentiment": 0.65},
+    "NVDA": {"price": 131.40, "volatility": 0.32, "sentiment": 0.75},
+    "AMZN": {"price": 197.85, "volatility": 0.21, "sentiment": 0.6},
+    "GOOGL": {"price": 176.30, "volatility": 0.19, "sentiment": 0.62},
+    "VXUS": {"price": 62.30, "volatility": 0.14, "sentiment": 0.55},
 }
 
 

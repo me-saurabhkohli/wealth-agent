@@ -1,0 +1,65 @@
+{
+  "client_id": "SYN004",
+  "goal": "Rebalance client SYN004 for tax efficiency, target 50/50",
+  "targets": {
+    "stock": 0.5,
+    "bond": 0.5
+  },
+  "as_of": "2026-11-24",
+  "holdings": [
+    {
+      "ticker": "AGG",
+      "asset_class": "bond",
+      "shares": 200,
+      "lots": [
+        {
+          "shares": 120,
+          "cost_basis": 104.0,
+          "acquired": "2025-08-04"
+        },
+        {
+          "shares": 80,
+          "cost_basis": 92.0,
+          "acquired": "2026-09-25"
+        }
+      ]
+    },
+    {
+      "ticker": "BND",
+      "asset_class": "bond",
+      "shares": 50,
+      "lots": [
+        {
+          "shares": 50,
+          "cost_basis": 70.0,
+          "acquired": "2024-03-02"
+        }
+      ]
+    },
+    {
+      "ticker": "VTI",
+      "asset_class": "stock",
+      "shares": 40,
+      "lots": [
+        {
+          "shares": 40,
+          "cost_basis": 240.0,
+          "acquired": "2024-03-24"
+        }
+      ]
+    },
+    {
+      "ticker": "QQQ",
+      "asset_class": "stock",
+      "shares": 10,
+      "lots": [
+        {
+          "shares": 10,
+          "cost_basis": 480.0,
+          "acquired": "2026-08-27"
+        }
+      ]
+    }
+  ],
+  "recent_sales": []
+}

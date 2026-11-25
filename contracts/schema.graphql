@@ -1,0 +1,16 @@
+# GraphQL Contract (Schema)
+# The schema from the article "I Built an AI Wealth Manager. Then I Took
+# Away Everything It Was Bad At." An endpoint that serves market data for
+# this project has to honor exactly this shape: the agent asks for named
+# fields and gets only those fields, with the types below.
+
+type MarketData {
+  ticker: String!
+  price: Float!
+  volatility30d: Float!
+  sentiment: Float!
+}
+
+type Query {
+  marketData(tickers: [String!]!): [MarketData!]!
+}
